@@ -292,14 +292,12 @@ fn set_dock_progress(app: &AppHandle, current: usize, total: usize) {
         tauri::window::ProgressBarState {
             status: Some(tauri::window::ProgressBarStatus::None),
             progress: None,
-            ..Default::default()
         }
     } else {
         let percent = ((current as f64 / total as f64) * 100.0).round().min(100.0) as u64;
         tauri::window::ProgressBarState {
             status: Some(tauri::window::ProgressBarStatus::Normal),
             progress: Some(percent),
-            ..Default::default()
         }
     };
     let _ = window.set_progress_bar(state);

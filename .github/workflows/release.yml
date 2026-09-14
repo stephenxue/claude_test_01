@@ -26,6 +26,9 @@ jobs:
         with:
           targets: aarch64-apple-darwin,x86_64-apple-darwin
 
+      - name: Install protoc
+        run: brew install protobuf
+
       - name: Cache Rust build
         uses: Swatinem/rust-cache@v2
         with:

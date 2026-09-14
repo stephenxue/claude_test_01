@@ -1,0 +1,172 @@
+.doc-manager {
+  width: 460px;
+  min-width: 360px;
+  border-right: 1px solid var(--border);
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.doc-manager-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.doc-manager-header h3 {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+/* Status bar: keeps the text label from before, but now sits on top of a
+   real progress-bar fill (semi-transparent) that grows left-to-right with
+   current/total, instead of being a flat static-colored box. */
+.doc-status-bar {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #eff4ff;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}
+.doc-status-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  background: rgba(37, 99, 235, 0.28);
+  transition: width 0.25s ease;
+}
+.doc-status-bar-text {
+  position: relative;
+  font-size: 12px;
+  color: var(--blue);
+  line-height: 1.5;
+  padding: 6px 0;
+}
+.doc-status-bar-static {
+  background: #f1f4f8;
+}
+.doc-status-bar-static .doc-status-bar-text {
+  color: var(--text-dim);
+}
+.doc-status-bar-error {
+  background: #fee2e2;
+}
+.doc-status-bar-error .doc-status-bar-text {
+  color: var(--red);
+}
+
+.doc-columns {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+}
+
+.doc-column {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  background: var(--bg);
+  min-height: 160px;
+}
+
+.doc-column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.btn-danger-sm,
+.btn-secondary-sm {
+  border: none;
+  border-radius: 5px;
+  padding: 3px 10px;
+  font-size: 11.5px;
+  font-weight: 500;
+}
+.btn-danger-sm {
+  background: #fee2e2;
+  color: var(--red);
+}
+.btn-danger-sm:hover:not(:disabled) {
+  background: #fecaca;
+}
+.btn-secondary-sm {
+  background: #dcfce7;
+  color: var(--green);
+}
+.btn-secondary-sm:hover:not(:disabled) {
+  background: #bbf7d0;
+}
+
+.doc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.doc-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 12px;
+  padding: 5px 6px;
+  border-radius: 6px;
+}
+.doc-list-item:hover {
+  background: var(--panel);
+}
+
+.doc-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
+}
+.doc-checkbox-label input[type="checkbox"] {
+  flex-shrink: 0;
+}
+
+.doc-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.doc-size {
+  color: var(--text-dim);
+  flex-shrink: 0;
+  font-size: 11px;
+}
+
+.doc-empty {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  padding: 6px 4px;
+}

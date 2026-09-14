@@ -1,0 +1,56 @@
+[package]
+name = "local-rag-app"
+version = "0.1.0"
+description = "本地知识库助手 - 本地文档向量化 + 本地大模型问答"
+authors = ["Your Company"]
+edition = "2021"
+rust-version = "1.77"
+
+[lib]
+name = "local_rag_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+tauri-plugin-shell = "2"
+tauri-plugin-updater = "2"
+tauri-plugin-process = "2"
+tauri-plugin-log = "2"
+
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "stream", "rustls-tls"] }
+futures-util = "0.3"
+anyhow = "1"
+thiserror = "1"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+walkdir = "2"
+sysinfo = "0.32"
+dirs = "5"
+log = "0.4"
+
+# Vector database. arrow-array/arrow-schema versions below are pinned to
+# match exactly what this lancedb release depends on internally (see that
+# release's rust/lancedb/Cargo.toml -> workspace arrow version) to avoid
+# type-mismatch errors. If you bump `lancedb`, bump these two to match.
+lancedb = { version = "0.38", features = ["remote"] }
+arrow-array = "58"
+arrow-schema = "58"
+
+[features]
+# This feature is used for production builds or when a dev server is not specified,
+# DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true

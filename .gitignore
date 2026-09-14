@@ -1,0 +1,27 @@
+# Node
+node_modules
+dist
+dist-ssr
+*.local
+npm-debug.log*
+
+# Tauri
+src-tauri/target
+src-tauri/gen
+src-tauri/Cargo.lock.bak
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+
+# App runtime data (created next to the executable / project root at runtime)
+app-config.json
+*.lance/
+archive/
+to_be_delete/
+
+# Env
+.env
+.env.local

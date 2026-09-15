@@ -65,7 +65,7 @@ jobs:
           security list-keychain -d user -s "$KEYCHAIN_PATH" login.keychain
 
       - name: Build, sign, notarize and publish (Tauri Action)
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@v0.5.24
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}

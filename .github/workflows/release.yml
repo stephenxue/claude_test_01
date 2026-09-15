@@ -80,5 +80,50 @@ jobs:
           releaseBody: "自动构建版本，请查看下方资源下载安装包。"
           releaseDraft: true
           prerelease: false
-          updaterJsonKeepUniversal: true
+          includeUpdaterJson: false
           args: --target universal-apple-darwin
+
+      # tauri-action's own updater-JSON step reports
+      # "Signature not found for the updater JSON. Skipping upload..." for our
+      # universal macOS build (seen on both the @v0 and @v0.5.24 releases of
+      # the action), so we build `latest.json` ourselves from the .sig file
+      # tauri already generated and the release asset tauri-action already
+      # uploaded.
+      - name: Generate and upload latest.json (updater manifest)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${{ github.ref_name }}"
+          REPO="${{ github.repository }}"
+
+          VERSION="$(node -p "require('./src-tauri/tauri.conf.json').version")"
+
+          BUNDLE_DIR="src-tauri/target/universal-apple-darwin/release/bundle/macos"
+          SIG_FILE=$(ls "$BUNDLE_DIR"/*.app.tar.gz.sig)
+          SIGNATURE=$(cat "$SIG_FILE")
+
+          ASSETS_JSON=$(gh release view "$TAG" -R "$REPO" --json assets)
+          echo "Release assets: $ASSETS_JSON"
+          DOWNLOAD_URL=$(echo "$ASSETS_JSON" | jq -r '.assets[] | select(.name | endswith(".app.tar.gz")) | .url')
+
+          if [ -z "$DOWNLOAD_URL" ]; then
+            echo "::error::Could not find the .app.tar.gz release asset to build latest.json from"
+            exit 1
+          fi
+
+          PUB_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+          cat > latest.json <<JSON
+          {
+            "version": "${VERSION}",
+            "notes": "自动构建版本，请查看下方资源下载安装包。",
+            "pub_date": "${PUB_DATE}",
+            "platforms": {
+              "darwin-aarch64": { "signature": "${SIGNATURE}", "url": "${DOWNLOAD_URL}" },
+              "darwin-x86_64": { "signature": "${SIGNATURE}", "url": "${DOWNLOAD_URL}" }
+            }
+          }
+          JSON
+
+          gh release upload "$TAG" latest.json --clobber -R "$REPO"
